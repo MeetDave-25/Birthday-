@@ -270,6 +270,23 @@ function stopSong() {
   musicBtn.textContent = "♪ music";
 }
 musicBtn.addEventListener("click", () => (music ? stopSong() : playSong()));
+
+// Start the music as soon as the page opens. Browsers block sound until the
+// first tap or key press, so if autoplay is refused, start on that first touch.
+let mutedByUser = false;
+musicBtn.addEventListener("click", () => (mutedByUser = !music));
+function autoStart() {
+  if (music || mutedByUser) return;
+  playSong();
+  if (audio.state !== "running") {
+    stopSong();
+    // a first tap on the music button itself is handled by its own toggle
+    const onFirstTouch = (e) => { if (!music && !mutedByUser && !musicBtn.contains(e.target)) playSong(); };
+    addEventListener("pointerdown", onFirstTouch, { once: true });
+    addEventListener("keydown", onFirstTouch, { once: true });
+  }
+}
+autoStart();
 function chime() {
   const t = ac().currentTime;
   [1046.5, 1318.5, 1568, 2093].forEach((f, i) => tone(f, t + i * 0.07, 0.7, { vol: 0.06 }));
