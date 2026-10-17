@@ -7,6 +7,8 @@ const CONFIG = {
   // flowers already picked for her (ids from FLOWERS below)
   bouquet: ["tulip", "rose", "peony", "daisy", "lily", "babysbreath", "lavender"],
   candles: 5,
+  // where her notes go: your Formspree endpoint, e.g. "https://formspree.io/f/abcdwxyz" (see README)
+  noteEndpoint: "",
   message: [
     "happy birthday! 🌷",
     "i couldn't send you real flowers through a screen, so i drew you a whole bouquet instead.",
@@ -529,7 +531,45 @@ card.addEventListener("click", flipCard);
 card.addEventListener("keydown", (e) => (e.key === "Enter" || e.key === " ") && flipCard());
 
 /* =========================================================
-   07 · Finale
+   07 · Write anything
+   ========================================================= */
+const noteForm = $("#noteForm");
+const noteStatus = $("#noteStatus");
+noteForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const text = $("#noteText").value.trim();
+  if (!text) return;
+  const btn = $("#noteSend");
+  btn.disabled = true;
+  noteStatus.textContent = "…";
+  let ok = !CONFIG.noteEndpoint;
+  if (CONFIG.noteEndpoint) {
+    try {
+      const res = await fetch(CONFIG.noteEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ name: NAME, message: text, _subject: `a birthday note from ${NAME} ✿` }),
+      });
+      ok = res.ok;
+    } catch { ok = false; }
+  }
+  if (!ok) {
+    noteStatus.textContent = "hmm, that didn't work — try again?";
+    btn.disabled = false;
+    return;
+  }
+  noteForm.classList.add("sent");
+  chime();
+  await wait(900);
+  hide(noteForm);
+  noteStatus.textContent = "beautiful ♥";
+  petals(3000);
+  hide($("#noteBtns"));
+  show($("#noteNext"));
+});
+
+/* =========================================================
+   08 · Finale
    ========================================================= */
 function party() {
   cannons();
@@ -540,5 +580,5 @@ $("#replayBtn").addEventListener("click", () => location.reload());
 
 const onEnter = {
   2: () => { arrange(); setTimeout(() => petals(3500), 1600); },
-  6: () => { renderBouquet($("#bouquetFinal"), arrangement, true); party(); petals(5000); if (!music) playSong(); },
+  7: () => { renderBouquet($("#bouquetFinal"), arrangement, true); party(); petals(5000); if (!music) playSong(); },
 };

@@ -179,6 +179,21 @@ button { font: inherit; color: inherit; }
 .card-sign { font-family: var(--hand); font-size: 26px; text-align: right; margin-top: 12px; line-height: 1.1; }
 .caret { display: inline-block; width: 1.5px; height: 20px; background: var(--ink); vertical-align: -3px; animation: blink .8s steps(1) infinite; }
 
+/* write back */
+.note {
+  width: min(380px, 100%); background: #fff; border: 1.5px solid var(--ink); box-shadow: 5px 5px 0 var(--sky);
+  padding: 20px 22px 14px; text-align: left; transform: rotate(1deg);
+  transition: transform .9s cubic-bezier(.5, -.3, .4, 1), opacity .9s;
+  background-image: repeating-linear-gradient(transparent 0 33px, rgba(156, 195, 230, .35) 33px 34px); background-position: 0 53px;
+}
+.note-from { font-family: var(--hand); font-size: 28px; text-align: right; }
+.note textarea {
+  width: 100%; border: 0; outline: 0; resize: none; background: transparent;
+  font-family: var(--hand); font-size: 24px; line-height: 34px; color: var(--ink);
+}
+.note textarea::placeholder { color: #b8b0a5; }
+.note.sent { transform: translateY(-40px) rotate(-4deg) scale(.6); opacity: 0; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .2s !important; }
 }

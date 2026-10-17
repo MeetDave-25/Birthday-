@@ -20,3 +20,9 @@ Edit `CONFIG` at the top of `script.js`: `name`, `from`, the pre-picked `bouquet
 
 No build step. Open `index.html`, or host it for free with GitHub Pages (Settings → Pages → deploy from branch).
 The mic option needs an `https` link.
+
+## Notes from her
+
+Step 7 lets her write anything she wants. To receive those notes, create a free form at
+[formspree.io](https://formspree.io) and paste its address into `noteEndpoint` in `script.js`
+(for example `https://formspree.io/f/abcdwxyz`). Notes then arrive in your email.

@@ -142,8 +142,25 @@
       <button class="btn hidden" id="cardNext" data-next>one last thing →</button>
     </section>
 
-    <!-- 07 · finale -->
+    <!-- 07 · write back -->
     <section class="scene" data-scene="6">
+      <p class="label">your turn</p>
+      <h2 class="h2">write anything</h2>
+      <p class="p">a wish, a thought, a secret — anything you want to write ✿</p>
+      <form class="note" id="noteForm">
+        <textarea id="noteText" rows="7" maxlength="2000" placeholder="write here…" required></textarea>
+        <p class="note-from">— <span class="js-name">vidhi</span></p>
+      </form>
+      <p class="caption" id="noteStatus"></p>
+      <div class="row" id="noteBtns">
+        <button class="btn" type="submit" form="noteForm" id="noteSend">done ✿</button>
+        <button class="btn ghost" data-next>skip</button>
+      </div>
+      <button class="btn hidden" id="noteNext" data-next>one last thing →</button>
+    </section>
+
+    <!-- 08 · finale -->
+    <section class="scene" data-scene="7">
       <p class="label">today is all yours</p>
       <h2 class="h1">happy birthday,<br /><em class="js-name">vidhi</em> ✿</h2>
       <svg class="doodle bouquet small" id="bouquetFinal" viewBox="0 0 400 470" aria-hidden="true"></svg>
