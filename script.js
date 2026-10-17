@@ -7,14 +7,18 @@ const CONFIG = {
   // flowers already picked for her (ids from FLOWERS below)
   bouquet: ["tulip", "rose", "peony", "daisy", "lily", "babysbreath", "lavender"],
   candles: 5,
-  // where her notes go: your Formspree endpoint, e.g. "https://formspree.io/f/abcdwxyz" (see README)
-  noteEndpoint: "",
   message: [
-    "happy birthday! 🌷",
-    "i couldn't send you real flowers through a screen, so i drew you a whole bouquet instead.",
-    "thank you for being you — for every laugh, every late-night talk and every ordinary day you made a little brighter.",
-    "i hope this year is soft and kind to you, full of good surprises, good people, and lots of cake.",
-    "never forget how loved you are. today and always.",
+    "Happy Birthday Vidhi ✨",
+    "Maybe you find bit odd but ya we are friends from short time but it's good time and I quite good to know and it never like i know you from short periods, its always like i know you from long time.",
+    "Find you so much yapper, so much interesting with so many hobbies, and every time I explore new things and learn new things from you. Sometime I feel we have same hobbies but sometimes I feel like we are so much opposite, but ya it's okay.",
+    "And \"ha\" and \"okay\" is your same reply as always, but aab muje aadat ho gai he. Aab me woh ha or okay ke piche find karta hu ki kya hi bolu ki yeh na bole ha or okay muje 😅 Sometimes I can't understand what you try to tell from ha and okay message but I try my hard to understand.",
+    "It's good time whatever time I spend with you. Thanks to became friend — I literally lose hope in friendship and I don't trust friendship, but thanks to you one hope is there 😅",
+    "And hope we also have good bond ahead. He to khara na plan continue karne ka friendship ki? Fir boring to nahi hu? Ha me kabhi kabhi boring ho jata hu ya fir face or face avoid karta hu milna — it's have reason, if you have time baat karege. And ya I like to know you more, if aap bus ans ha and okay na de to...",
+    "Baki I am always there for you, whatever you consider me. I am always there — if you need any help in anything I am there, just call or message...",
+    "Have great year ahead of you and enjoy! And story rakh ne se koi nahi mil jata, find karna padta he uske liye, samje aap 😄 Me instagram nahi use kar raha aabhi nahi to achi wali story rakhta, but koi na...",
+    "Or if any wish he to batana — kuch de to nahi laya, but if puri kar pau, if kahena he to aapko...",
+    "Baki yehi hu bus, thoda ha or okay ke bich fas jata hu 😅🥲🫠",
+    "Happy birthday Vidhi 🎂",
   ],
 };
 
@@ -520,7 +524,7 @@ async function flipCard() {
   for (const ch of text) {
     if (skip) { node.textContent = text; break; }
     node.textContent += ch;
-    await wait(ch === "\n" ? 220 : /[.,!?—]/.test(ch) ? 160 : 30);
+    await wait(ch === "\n" ? 180 : /[.,!?—]/.test(ch) ? 90 : 16);
   }
   caret.remove();
   show($("#cardSign"));
@@ -542,15 +546,17 @@ noteForm.addEventListener("submit", async (e) => {
   const btn = $("#noteSend");
   btn.disabled = true;
   noteStatus.textContent = "…";
-  let ok = !CONFIG.noteEndpoint;
-  if (CONFIG.noteEndpoint) {
+  const endpoint = window.NOTES_ENDPOINT;
+  let ok = !endpoint;
+  if (endpoint) {
     try {
-      const res = await fetch(CONFIG.noteEndpoint, {
+      // text/plain keeps this a simple request, which Apps Script accepts cross-origin
+      const res = await fetch(endpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ name: NAME, message: text, _subject: `a birthday note from ${NAME} ✿` }),
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ name: NAME, message: text }),
       });
-      ok = res.ok;
+      ok = res.ok && (await res.json()).ok;
     } catch { ok = false; }
   }
   if (!ok) {
