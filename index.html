@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Happy Birthday 🎂</title>
+  <meta name="description" content="A little birthday surprise, made with love." />
+  <meta name="theme-color" content="#ffd6e4" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- dreamy background -->
+  <div class="bg" aria-hidden="true">
+    <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+  </div>
+  <div class="floaties" id="floaties" aria-hidden="true"></div>
+  <canvas id="fx" aria-hidden="true"></canvas>
+
+  <!-- top bar -->
+  <header class="topbar">
+    <div class="dots" id="dots" aria-label="Progress"></div>
+    <button class="icon-btn" id="musicBtn" aria-label="Play music" title="Music">♪</button>
+  </header>
+
+  <main class="stage">
+
+    <!-- 0 · Gift -->
+    <section class="scene active" data-scene="0">
+      <p class="eyebrow">psst… today is special ✨</p>
+      <h1 class="title">Hey <span class="name js-name">you</span>!</h1>
+      <p class="sub">I made a little something for you. Tap the gift to open it 💝</p>
+
+      <div class="gift" id="gift" role="button" tabindex="0" aria-label="Open the gift">
+        <div class="gift-lid"><span class="bow l"></span><span class="bow r"></span><span class="knot"></span></div>
+        <div class="gift-box"><span class="ribbon"></span></div>
+        <div class="gift-glow"></div>
+      </div>
+
+      <button class="btn" id="giftBtn">Open your gift 🎁</button>
+    </section>
+
+    <!-- 1 · Cake -->
+    <section class="scene" data-scene="1">
+      <p class="eyebrow">step one</p>
+      <h2 class="title sm">Make a wish 🎂</h2>
+      <p class="sub" id="cakeText">Close your eyes, make a wish… then blow out the candles!</p>
+
+      <div class="cake-wrap">
+        <div class="cake" id="cake">
+          <div class="candles" id="candles"></div>
+          <div class="tier top"><span class="drip"></span><span class="sprinkles"></span></div>
+          <div class="tier bottom"><span class="drip"></span><span class="sprinkles"></span><span class="hearts-row">♥ ♥ ♥</span></div>
+          <div class="plate"></div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn" id="blowBtn">Blow the candles 🌬️</button>
+        <button class="btn ghost" id="micBtn">Blow into mic 🎤</button>
+      </div>
+      <button class="btn next hidden" data-next>Next surprise →</button>
+    </section>
+
+    <!-- 2 · Flowers -->
+    <section class="scene" data-scene="2">
+      <p class="eyebrow">step two</p>
+      <h2 class="title sm">A garden for you 🌷</h2>
+      <p class="sub" id="flowerText">These little buds are waiting for you…</p>
+
+      <div class="garden" id="garden">
+        <img class="garden-photo" src="assets/tulips.jpg" alt="A bouquet of pink tulips" />
+        <svg class="garden-svg" viewBox="0 0 400 260" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+          <defs>
+            <linearGradient id="petal" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#ffd1e1"/><stop offset="1" stop-color="#f06a98"/>
+            </linearGradient>
+            <linearGradient id="petal2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#fff0f5"/><stop offset="1" stop-color="#f7a3c0"/>
+            </linearGradient>
+            <linearGradient id="petal3" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#ffe7c9"/><stop offset="1" stop-color="#ff9e9e"/>
+            </linearGradient>
+          </defs>
+          <g id="flowers"></g>
+        </svg>
+      </div>
+
+      <button class="btn" id="bloomBtn">Make them bloom 🌸</button>
+      <button class="btn next hidden" data-next>Next surprise →</button>
+    </section>
+
+    <!-- 3 · Puppy -->
+    <section class="scene" data-scene="3">
+      <p class="eyebrow">step three</p>
+      <h2 class="title sm">Someone wants to say hi 🐾</h2>
+      <p class="sub" id="pupText">I hear tiny paws… who could it be?</p>
+
+      <div class="pup-stage" id="pupStage">
+        <div class="bubble" id="bubble">Woof! Happy Birthday! 🎉</div>
+        <svg class="puppy" id="puppy" viewBox="0 0 240 240" role="img" aria-label="A cute puppy">
+          <!-- tail -->
+          <g class="tail"><path d="M168 168 q34 -10 36 -44" stroke="#e8b07a" stroke-width="14" fill="none" stroke-linecap="round"/></g>
+          <!-- body -->
+          <ellipse cx="120" cy="182" rx="56" ry="44" fill="#f6cf9f"/>
+          <ellipse cx="120" cy="194" rx="32" ry="26" fill="#fff4e6"/>
+          <!-- paws -->
+          <ellipse cx="94" cy="222" rx="16" ry="11" fill="#fff4e6"/>
+          <ellipse cx="146" cy="222" rx="16" ry="11" fill="#fff4e6"/>
+          <!-- bandana -->
+          <path d="M84 146 q36 24 72 0 l-8 18 q-28 14 -56 0z" fill="#ff7aa8"/>
+          <circle cx="104" cy="156" r="2.4" fill="#fff"/><circle cx="120" cy="160" r="2.4" fill="#fff"/><circle cx="136" cy="156" r="2.4" fill="#fff"/>
+          <!-- head -->
+          <g class="head">
+            <g class="ear l"><path d="M70 72 q-26 6 -22 52 q4 22 22 12 q10 -30 12 -54z" fill="#c98b57"/></g>
+            <g class="ear r"><path d="M170 72 q26 6 22 52 q-4 22 -22 12 q-10 -30 -12 -54z" fill="#c98b57"/></g>
+            <ellipse cx="120" cy="100" rx="54" ry="50" fill="#f6cf9f"/>
+            <ellipse cx="120" cy="120" rx="30" ry="22" fill="#fff4e6"/>
+            <ellipse cx="146" cy="82" rx="14" ry="12" fill="#e8b07a" opacity=".55"/>
+            <!-- party hat -->
+            <g class="hat">
+              <path d="M104 56 L122 8 L140 56 z" fill="#b9a6ff"/>
+              <path d="M110 40 L134 40 M114 28 L130 28" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="122" cy="8" r="7" fill="#ffd36e"/>
+            </g>
+            <g class="eyes">
+              <ellipse cx="100" cy="96" rx="8" ry="9" fill="#3b2a2a"/>
+              <ellipse cx="140" cy="96" rx="8" ry="9" fill="#3b2a2a"/>
+              <circle cx="103" cy="92" r="3" fill="#fff"/><circle cx="143" cy="92" r="3" fill="#fff"/>
+            </g>
+            <ellipse cx="86" cy="114" rx="9" ry="5" fill="#ff9fbf" opacity=".7"/>
+            <ellipse cx="154" cy="114" rx="9" ry="5" fill="#ff9fbf" opacity=".7"/>
+            <ellipse cx="120" cy="110" rx="9" ry="6.5" fill="#3b2a2a"/>
+            <path d="M120 116 v6 M120 122 q-8 8 -14 2 M120 122 q8 8 14 2" stroke="#3b2a2a" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+            <path class="tongue" d="M114 126 q6 14 12 0z" fill="#ff7a9c"/>
+          </g>
+        </svg>
+      </div>
+
+      <button class="btn" id="pupBtn">Call the puppy 🐶</button>
+      <p class="hint hidden" id="pupHint">(psst… tap the puppy for cuddles)</p>
+      <button class="btn next hidden" data-next>Next surprise →</button>
+    </section>
+
+    <!-- 4 · Letter -->
+    <section class="scene" data-scene="4">
+      <p class="eyebrow">the last one</p>
+      <h2 class="title sm">A little letter 💌</h2>
+      <p class="sub" id="letterSub">Something I wanted to tell you…</p>
+
+      <div class="envelope" id="envelope">
+        <div class="env-back"></div>
+        <div class="letter" id="letter">
+          <div class="letter-inner">
+            <p class="letter-to">Dear <span class="js-name">you</span>,</p>
+            <div class="letter-body" id="letterBody"></div>
+            <p class="letter-from hidden" id="letterFrom">With all my love,<br /><span class="js-from">me</span> 💗</p>
+          </div>
+        </div>
+        <div class="env-front"></div>
+        <div class="env-flap"></div>
+        <div class="seal">♥</div>
+      </div>
+
+      <button class="btn" id="letterBtn">Open my letter 💌</button>
+      <button class="btn next hidden" data-next>One more thing →</button>
+    </section>
+
+    <!-- 5 · Finale -->
+    <section class="scene" data-scene="5">
+      <p class="eyebrow">today is all about you</p>
+      <h2 class="title big">Happy Birthday,<br /><span class="name js-name">you</span>!</h2>
+      <div class="polaroid">
+        <img src="assets/flowers.jpg" alt="A collage of beautiful flowers" />
+        <p>every flower here is for you 🌸</p>
+      </div>
+      <p class="sub">May your year bloom as beautifully as you do.</p>
+      <div class="btn-row">
+        <button class="btn" id="partyBtn">Celebrate again 🎉</button>
+        <button class="btn ghost" id="replayBtn">Start over ↺</button>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="balloons" id="balloons" aria-hidden="true"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
