@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>notes inbox</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✉</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .admin { max-width: 560px; margin: 0 auto; padding: 72px 16px 48px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+    .login { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .login input {
+      font: inherit; font-size: 13px; padding: 11px 14px; min-width: 220px;
+      border: 1.5px solid var(--ink); border-radius: 2px; background: #fff; outline: 0;
+    }
+    .list { width: 100%; display: flex; flex-direction: column; gap: 18px; margin-top: 8px; }
+    .item { position: relative; background: #fff; border: 1.5px solid var(--ink); box-shadow: 5px 5px 0 var(--pink); padding: 18px 20px 14px; text-align: left; }
+    .item:nth-child(even) { box-shadow: 5px 5px 0 var(--sky); transform: rotate(.6deg); }
+    .item:nth-child(odd) { transform: rotate(-.6deg); }
+    .item .msg { font-family: var(--hand); font-size: 24px; line-height: 1.3; white-space: pre-wrap; word-break: break-word; }
+    .item .meta { margin-top: 10px; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); display: flex; justify-content: space-between; gap: 8px; }
+    .status { font-size: 12px; color: var(--ink-soft); min-height: 18px; }
+  </style>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="top">
+    <span class="mark">✉ notes inbox</span>
+    <a class="sound" href="index.html">← site</a>
+  </header>
+
+  <main class="admin">
+    <p class="label">admin</p>
+    <h1 class="h2">her notes</h1>
+    <form class="login" id="login">
+      <input type="password" id="key" placeholder="password" autocomplete="current-password" required />
+      <button class="btn" type="submit">open ✿</button>
+    </form>
+    <p class="status" id="status"></p>
+    <div class="list" id="list"></div>
+  </main>
+
+  <script src="notes-config.js"></script>
+  <script>
+    const $ = (s) => document.querySelector(s);
+    const status = $("#status");
+    const list = $("#list");
+
+    async function load(key) {
+      if (!window.NOTES_ENDPOINT) { status.textContent = "set NOTES_ENDPOINT in notes-config.js first"; return; }
+      status.textContent = "loading…";
+      try {
+        const res = await fetch(`${window.NOTES_ENDPOINT}?key=${encodeURIComponent(key)}`);
+        const data = await res.json();
+        if (!data.ok) { status.textContent = data.error || "couldn't open the inbox"; return; }
+        try { sessionStorage.setItem("notesKey", key); } catch {}
+        $("#login").classList.add("hidden");
+        status.textContent = data.notes.length ? `${data.notes.length} note${data.notes.length > 1 ? "s" : ""} ♥` : "no notes yet — check back soon ✿";
+        list.replaceChildren(...data.notes.map((n) => {
+          const el = document.createElement("article");
+          el.className = "item";
+          const msg = document.createElement("p");
+          msg.className = "msg";
+          msg.textContent = n.message;
+          const meta = document.createElement("p");
+          meta.className = "meta";
+          meta.append(Object.assign(document.createElement("span"), { textContent: `— ${n.name || "someone"}` }));
+          meta.append(Object.assign(document.createElement("span"), { textContent: new Date(n.time).toLocaleString() }));
+          el.append(msg, meta);
+          return el;
+        }));
+      } catch {
+        status.textContent = "couldn't reach the inbox — check the endpoint";
+      }
+    }
+
+    $("#login").addEventListener("submit", (e) => { e.preventDefault(); load($("#key").value); });
+    try { const k = sessionStorage.getItem("notesKey"); if (k) load(k); } catch {}
+  </script>
+</body>
+</html>
