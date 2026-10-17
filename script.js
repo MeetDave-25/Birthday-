@@ -76,7 +76,7 @@ const FLOWERS = {
     draw: () => `${ring(14, petal(23, 5), "#ffffff")}<circle r="7" fill="#f6d365"/>`,
   },
   sunflower: {
-    name: "sunflower", meaning: "sunflower — you're my sunshine",
+    name: "sunflower", meaning: "sunflower — you look like sunshine",
     draw: () => `
       ${ring(16, `M0 0 C6 -8 6 -18 0 -26 C-6 -18 -6 -8 0 0Z`, "#f6d365", 11)}
       <circle r="11" fill="#9a6b45"/>
