@@ -23,17 +23,18 @@ The mic option needs an `https` link.
 
 ## Notes from her
 
-Step 7 lets her write anything she wants. Notes are saved to a Google Sheet, and you read them on
-the password-protected admin page at `admin.html` (it isn't linked from the birthday page).
+Step 7 lets her write anything she wants. Notes are saved in Supabase, and you read them on the
+admin page at `admin.html` (it isn't linked from the birthday page). The Supabase address and
+public anon key are already in `notes-config.js`.
 
-One-time setup (about 5 minutes, free):
+One-time setup in the Supabase dashboard:
 
-1. Create a new Google Sheet. Open **Extensions → Apps Script**.
-2. Replace the code there with everything in `apps-script/Code.gs`, then save.
-3. Open **Project Settings** (gear icon) → **Script Properties** → add `ADMIN_KEY` with a password you choose.
-4. Click **Deploy → New deployment** → type **Web app**. Set *Execute as* to **Me** and
-   *Who has access* to **Anyone**. Deploy, allow the permissions, and copy the **Web app URL**.
-5. Paste that URL into `notes-config.js`: `window.NOTES_ENDPOINT = "https://script.google.com/macros/s/.../exec";`
-6. Open `your-site/admin.html`, enter your password, and her notes appear. They're also in the Sheet.
+1. **SQL Editor → New query**: paste everything from `supabase/setup.sql` and click **Run**.
+   This creates the `notes` table and the rules: anyone can add a note, only a signed-in admin can read.
+2. **Authentication → Users → Add user → Create new user**: enter your email and a password you choose
+   (tick *Auto Confirm User*). This is your admin login.
+3. **Authentication → Sign In / Providers**: turn **off** "Allow new users to sign up", so nobody else
+   can create an account and read the notes.
+4. Open `your-site/admin.html` and sign in with that email and password.
 
-If you change `Code.gs` later, use **Deploy → Manage deployments → Edit → New version** so the URL stays the same.
+Notes also show up in Supabase under **Table Editor → notes**.

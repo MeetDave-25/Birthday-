@@ -37,6 +37,7 @@
     <p class="label">admin</p>
     <h1 class="h2">her notes</h1>
     <form class="login" id="login">
+      <input type="email" id="email" placeholder="email" autocomplete="username" required />
       <input type="password" id="key" placeholder="password" autocomplete="current-password" required />
       <button class="btn" type="submit">open ✿</button>
     </form>
@@ -50,17 +51,36 @@
     const status = $("#status");
     const list = $("#list");
 
-    async function load(key) {
-      if (!window.NOTES_ENDPOINT) { status.textContent = "set NOTES_ENDPOINT in notes-config.js first"; return; }
+    const db = window.NOTES;
+
+    async function signIn(email, password) {
+      const res = await fetch(`${db.url}/auth/v1/token?grant_type=password`, {
+        method: "POST",
+        headers: { apikey: db.anonKey, "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error_description || data.msg || "wrong email or password");
+      return data.access_token;
+    }
+
+    async function load(token) {
       status.textContent = "loading…";
       try {
-        const res = await fetch(`${window.NOTES_ENDPOINT}?key=${encodeURIComponent(key)}`);
-        const data = await res.json();
-        if (!data.ok) { status.textContent = data.error || "couldn't open the inbox"; return; }
-        try { sessionStorage.setItem("notesKey", key); } catch {}
+        const res = await fetch(`${db.url}/rest/v1/notes?select=name,message,created_at&order=created_at.desc`, {
+          headers: { apikey: db.anonKey, Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) {
+          try { sessionStorage.removeItem("notesToken"); } catch {}
+          $("#login").classList.remove("hidden");
+          status.textContent = "session expired — sign in again";
+          return;
+        }
+        const notes = (await res.json()).map((n) => ({ ...n, time: n.created_at }));
+        try { sessionStorage.setItem("notesToken", token); } catch {}
         $("#login").classList.add("hidden");
-        status.textContent = data.notes.length ? `${data.notes.length} note${data.notes.length > 1 ? "s" : ""} ♥` : "no notes yet — check back soon ✿";
-        list.replaceChildren(...data.notes.map((n) => {
+        status.textContent = notes.length ? `${notes.length} note${notes.length > 1 ? "s" : ""} ♥` : "no notes yet — check back soon ✿";
+        list.replaceChildren(...notes.map((n) => {
           const el = document.createElement("article");
           el.className = "item";
           const msg = document.createElement("p");
@@ -74,12 +94,17 @@
           return el;
         }));
       } catch {
-        status.textContent = "couldn't reach the inbox — check the endpoint";
+        status.textContent = "couldn't reach the database — try again";
       }
     }
 
-    $("#login").addEventListener("submit", (e) => { e.preventDefault(); load($("#key").value); });
-    try { const k = sessionStorage.getItem("notesKey"); if (k) load(k); } catch {}
+    $("#login").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      status.textContent = "signing in…";
+      try { await load(await signIn($("#email").value, $("#key").value)); }
+      catch (err) { status.textContent = err.message; }
+    });
+    try { const t = sessionStorage.getItem("notesToken"); if (t) load(t); } catch {}
   </script>
 </body>
 </html>

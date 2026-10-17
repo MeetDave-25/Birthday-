@@ -546,17 +546,21 @@ noteForm.addEventListener("submit", async (e) => {
   const btn = $("#noteSend");
   btn.disabled = true;
   noteStatus.textContent = "…";
-  const endpoint = window.NOTES_ENDPOINT;
-  let ok = !endpoint;
-  if (endpoint) {
+  const db = window.NOTES;
+  let ok = !db?.url;
+  if (db?.url) {
     try {
-      // text/plain keeps this a simple request, which Apps Script accepts cross-origin
-      const res = await fetch(endpoint, {
+      const res = await fetch(`${db.url}/rest/v1/notes`, {
         method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        headers: {
+          apikey: db.anonKey,
+          Authorization: `Bearer ${db.anonKey}`,
+          "Content-Type": "application/json",
+          Prefer: "return=minimal",
+        },
         body: JSON.stringify({ name: NAME, message: text }),
       });
-      ok = res.ok && (await res.json()).ok;
+      ok = res.ok;
     } catch { ok = false; }
   }
   if (!ok) {
