@@ -1,21 +1,22 @@
 import React from 'react';
 import {AbsoluteFill, Audio, Sequence, staticFile} from 'remotion';
 import {Grade, Grain, Letterbox, Subtitles, Vignette} from './fx';
-import {Album, Arrival, ClockScene, Corridor, Desert, Final, JumpScare, Montage, Opening, Reveal, Title} from './scenes';
+import {Opening} from './scenes';
+import {AlbumP, ArrivalP, ClockP, CorridorP, DesertP, FinalP, JumpScareP, MontageP, RevealP, TitleP} from './plateScenes';
 import {SCENES} from './timeline';
 
 const parts: [keyof typeof SCENES, React.FC][] = [
   ['opening', Opening],
-  ['desert', Desert],
-  ['clock', ClockScene],
-  ['arrival', Arrival],
-  ['corridor', Corridor],
-  ['album', Album],
-  ['reveal', Reveal],
-  ['montage', Montage],
-  ['jumpscare', JumpScare],
-  ['title', Title],
-  ['final', Final],
+  ['desert', DesertP],
+  ['clock', ClockP],
+  ['arrival', ArrivalP],
+  ['corridor', CorridorP],
+  ['album', AlbumP],
+  ['reveal', RevealP],
+  ['montage', MontageP],
+  ['jumpscare', JumpScareP],
+  ['title', TitleP],
+  ['final', FinalP],
 ];
 
 export const KhamoshHaveli: React.FC = () => (

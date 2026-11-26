@@ -8,9 +8,16 @@
   "dependencies": {
     "@fontsource/cinzel": "^5.1.0",
     "@fontsource/cormorant-garamond": "^5.1.0",
+    "@pmndrs/assets": "^1.7.0",
+    "@react-three/drei": "^9.117.3",
+    "@react-three/fiber": "^8.17.10",
+    "@react-three/postprocessing": "^2.16.3",
     "@remotion/cli": "4.0.290",
+    "@remotion/three": "^4.0.290",
+    "postprocessing": "^6.36.4",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "remotion": "4.0.290"
+    "remotion": "4.0.290",
+    "three": "^0.170.0"
   }
 }
