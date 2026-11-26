@@ -14,7 +14,8 @@ for a story, is not alone in the corridor, and finds her own photograph in a
 | `src/scenes.tsx` | All 11 animated scenes (haveli, clock, corridor ghost, album, jump scare, title) |
 | `src/fx.tsx` | Film look: grain, letterbox, teal/amber grade, fog, dust, subtitles |
 | `scripts/make_soundtrack.py` | Synthesizes the score + all sound effects in sync |
-| `scripts/make_voice.sh` | Adds Hindi narration voice (Piper, free) and re-mixes |
+| `scripts/make_voice.py` / `make_voice.sh` | Hinglish narration with free offline Piper voices (narrator: rohan, ghost: priyamvada), fitted to subtitle windows, then re-mixed |
+| `src/three/Plates.tsx` + `scripts/render-plates.sh` | Realistic 3D still plates (Three.js, PBR, shadows, bloom, DOF) |
 
 ## Commands
 ```bash
