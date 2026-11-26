@@ -164,7 +164,12 @@ export const paperTexture = (seed: string) => {
 };
 
 /** Vintage photograph print (with white border + caption) drawn around an image painter. */
-const photoPrint = (seed: string, caption: string, paint: (g: CanvasRenderingContext2D, w: number, h: number) => void) => {
+const photoPrint = (
+  seed: string,
+  caption: string,
+  paint: (g: CanvasRenderingContext2D, w: number, h: number) => void,
+  post?: (g: CanvasRenderingContext2D, w: number, h: number) => void
+) => {
   const W = 800;
   const H = 1000;
   const [c, g] = canvas(W, H);
@@ -183,6 +188,12 @@ const photoPrint = (seed: string, caption: string, paint: (g: CanvasRenderingCon
   vg.addColorStop(1, 'rgba(40,20,5,0.55)');
   g.fillStyle = vg;
   g.fillRect(40, 40, pw, ph);
+  if (post) {
+    g.save();
+    g.translate(40, 40);
+    post(g, pw, ph);
+    g.restore();
+  }
   age(g, W, H, seed, 1.2);
   g.fillStyle = '#4a2a12';
   g.font = 'italic 500 58px "Cormorant Garamond", serif';
@@ -264,7 +275,24 @@ export const portraitTexture = (eyes = 0) =>
     g.arc(w / 2, h * 0.3, 5, 0, Math.PI * 2);
     g.fill();
     g.filter = 'none';
-  });
+  }, eyes > 0 ? (g, w, h) => {
+    [-1, 1].forEach((s) => {
+      const x = w / 2 + s * w * 0.058;
+      const y = h * 0.352;
+      const glow = g.createRadialGradient(x, y, 0, x, y, w * 0.05);
+      glow.addColorStop(0, `rgba(255,40,20,${0.9 * eyes})`);
+      glow.addColorStop(0.35, `rgba(220,20,10,${0.5 * eyes})`);
+      glow.addColorStop(1, 'rgba(120,0,0,0)');
+      g.fillStyle = glow;
+      g.beginPath();
+      g.arc(x, y, w * 0.05, 0, Math.PI * 2);
+      g.fill();
+      g.fillStyle = `rgba(255,${120},${90},${eyes})`;
+      g.beginPath();
+      g.arc(x, y, w * 0.006, 0, Math.PI * 2);
+      g.fill();
+    });
+  } : undefined);
 
 export const familyPhotoTexture = () =>
   photoPrint('family', 'Thakur parivaar, 1946', (g, w, h) => {

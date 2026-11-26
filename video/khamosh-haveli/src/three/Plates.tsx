@@ -440,12 +440,12 @@ const ClockScene: React.FC<{twitch?: boolean}> = ({twitch}) => {
       </mesh>
       <mesh position={[0, 0, 0.325]}>
         <circleGeometry args={[1.52, 96]} />
-        <meshBasicMaterial map={glass} transparent opacity={0.55} depthWrite={false} />
+        <meshBasicMaterial map={glass} transparent opacity={0.28} depthWrite={false} />
       </mesh>
       {/* candle light from below-left, cool rim from the right */}
       <pointLight position={[-2.2, -2.2, 1.6]} color="#ff9440" intensity={14} distance={12} decay={1.6} castShadow shadow-mapSize-width={2048} shadow-mapSize-height={2048} />
       <pointLight position={[3, 2.5, 1.2]} color="#7fa0c0" intensity={2.5} distance={10} decay={1.6} />
-      <CameraRig position={[0.9, -0.35, 4.3]} target={[0, 0.05, 0]} fov={40} roll={-0.06} />
+      <CameraRig position={[0.6, -0.25, 4.4]} target={[0.05, 0.0, 0]} fov={40} roll={-0.05} />
       <EffectComposer multisampling={4}>
         <DepthOfField focusDistance={0.0} focalLength={0.06} bokehScale={2.5} />
         <Bloom intensity={0.6} luminanceThreshold={0.7} mipmapBlur />
@@ -643,7 +643,7 @@ const AlbumScene: React.FC<{page: 1 | 2 | 'photo'; eyes?: boolean}> = ({page, ey
       ) : (
         <mesh position={[1.35, 0.34, 0.0]} rotation={[-Math.PI / 2, 0, -0.03]} castShadow receiveShadow>
           <planeGeometry args={[1.7, 2.12]} />
-          <meshStandardMaterial map={portrait} roughness={0.45} emissiveMap={eyes ? portrait : null} emissive={eyes ? '#ff2010' : '#000'} emissiveIntensity={eyes ? 0.08 : 0} />
+          <meshStandardMaterial map={portrait} roughness={0.45}  />
         </mesh>
       )}
       {/* candle on the table */}
@@ -739,7 +739,7 @@ const TitleScene: React.FC<{variant: 'a' | 'b'}> = ({variant}) => {
       <points geometry={dust}>
         <pointsMaterial size={2.2} sizeAttenuation={false} color={new THREE.Color(3, 1.6, 0.6)} toneMapped={false} transparent opacity={0.7} />
       </points>
-      <CameraRig position={[0, 0.05, 7.2]} target={[0, -0.05, 0]} fov={40} />
+      <CameraRig position={[0, 0.05, 9.8]} target={[0, -0.1, 0]} fov={40} />
       <EffectComposer multisampling={4}>
         <Bloom intensity={1.2} luminanceThreshold={0.75} mipmapBlur />
         <Vignette offset={0.2} darkness={0.9} />
