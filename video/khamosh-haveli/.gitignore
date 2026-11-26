@@ -1,0 +1,5 @@
+node_modules/
+.voice/
+out/*.mp4
+!out/khamosh-haveli.mp4
+public/soundtrack.wav
